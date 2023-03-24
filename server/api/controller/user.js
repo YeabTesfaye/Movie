@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import handler from "express-async-handler";
 import hashPassword, { comparePasswords } from '../../lib/hashed.js'
+import Booking from "../models/Bookings.js";
 
 export const getAllUsers = handler(async (req, res) => {
   try {
@@ -102,7 +103,6 @@ export const deleteUsers = handler(async(req,res) => {
   }
 })
 
-
 export const login = handler(async(req,res) => {
   const {email, password} = req.body
 
@@ -129,3 +129,20 @@ export const login = handler(async(req,res) => {
     });
   }
 })
+
+export const getBookingsOfUser = handler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const bookings = await Booking.find({ user: id });
+    if (!bookings) {
+      return res.status(404).json({
+        message: "Booking Not Found !!",
+      });
+    }
+    return res.status(200).json({ bookings });
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    });
+  }
+});

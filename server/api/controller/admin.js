@@ -76,3 +76,15 @@ export const login = handler(async(req,res) => {
         })
     }
 })
+
+
+export const getAllAdmins = handler(async(req,res) => {
+  try {
+    const admins = await Admin.find();
+    return res.status(200).json({admins})
+  } catch (err) {
+    return res.status(500).json({
+      message  : err.message
+    })
+  }
+})

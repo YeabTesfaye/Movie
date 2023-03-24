@@ -6,7 +6,7 @@ const MovieSchema = new Schema({
     required: true,
     // trim: true,
   },
-  actors : [{type : String, required : true}],
+  actors: [{ type: String, required: true }],
   description: {
     type: String,
     required: true,
@@ -22,14 +22,13 @@ const MovieSchema = new Schema({
   featured: {
     type: Boolean,
   },
-  bookings: [{ type: String }],
+  bookings: [{ type: mongoose.Types.ObjectId, ref: "Booking" }],
   admin: {
     type: mongoose.Types.ObjectId,
-    ref : "Admin",
+    ref: "Admin",
     required: true,
   },
 });
-
 
 const Movie = model("Movie", MovieSchema);
 export default Movie;

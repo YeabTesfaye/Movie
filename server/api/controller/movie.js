@@ -2,6 +2,8 @@ import Movie from "../models/Movie.js";
 import handler from 'express-async-handler'
 import Joi from "joi";
 import { movieSchema } from "../../lib/validator.js";
+import mongoose from "mongoose";
+import Admin from "../models/Admin.js";
 
 
 export const addMovie = handler(async(req,res) => {
@@ -23,7 +25,15 @@ export const addMovie = handler(async(req,res) => {
        admin : req.admin.id,
        actors
      });
-     await movie.save();
+
+    const session = await mongoose.startSession()
+    const adminUser = await Admin.findById(req.admin.id);
+    session.startTransaction()
+    await movie.save({session});
+    adminUser.addedMovies.push(movie);
+    await adminUser.save({session});
+    await session.commitTransaction()
+
      return res.status(200).json({movie})
    } catch (err) {
     return res.status(500).json({
