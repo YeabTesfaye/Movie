@@ -1,4 +1,5 @@
-import mongoose, { Schema, model } from "mongoose";
+import mongoose from "mongoose";
+const { Schema, model } = mongoose;
 
 const MovieSchema = new Schema({
   title: {

@@ -7,10 +7,10 @@ import Admin from "../models/Admin.js";
 
 
 export const addMovie = handler(async(req,res) => {
-    const {error} = movieSchema.validate(req.body);
-    if (error) {
-      return res.status(422).json({ error: error.details[0].message });
-    }
+    // const {error} = movieSchema.validate(req.body);
+    // if (error) {
+    //   return res.status(422).json({ error: error.details[0].message });
+    // }
 
    try {
     
@@ -45,8 +45,8 @@ export const addMovie = handler(async(req,res) => {
 
 export const getMovies = handler(async(req,res) => {
     try {
-        const movies = await Movie.find({})
-        return res.status(200).json(movies)
+        const movies = await Movie.find()
+        return res.status(200).json({movies})
     } catch (err) {
         return res.status(500).json({
             message : err.message

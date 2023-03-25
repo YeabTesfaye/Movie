@@ -1,13 +1,10 @@
 import bcrypt from "bcryptjs";
 
-async function hashPassword(password) {
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    return hashedPassword;
-  } catch (error) {
-    console.error(error);
-  }
-}
+const hashPassword = (password) => {
+  const salt = bcrypt.genSaltSync(10);
+  return bcrypt.hashSync(password, salt);
+};
+
 
 
 export async function comparePasswords(password, hashedPassword) {

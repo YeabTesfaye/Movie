@@ -1,9 +1,10 @@
-import mongoose, {Schema, model} from 'mongoose'
+import mongoose from "mongoose";
+const { Schema, model } = mongoose;
 
 const BookingSchema = new Schema({
   movie: {
     type: mongoose.Types.ObjectId,
-    ref: "movie",
+    ref: "Movie",
     required: true,
   },
   date: {

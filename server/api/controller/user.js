@@ -16,6 +16,7 @@ export const getAllUsers = handler(async (req, res) => {
 
 export const addUsers = handler(async (req, res) => {
   const { email, password, name } = req.body;
+  console.log(req.body);
   try {
     if (
       !email &&
@@ -36,7 +37,7 @@ export const addUsers = handler(async (req, res) => {
         message : "User Already Exist"
       })
     }
-    const hashedPassword = hashPassword();
+    const hashedPassword = hashPassword(password);
     const user = new User({
       email,
       name,
@@ -44,7 +45,7 @@ export const addUsers = handler(async (req, res) => {
     });
     await user.save();
     return res.status(201).json({ user });
-  } catch (error) {
+  } catch (err) {
     return res.status(500).json({
       message: err.message,
     });

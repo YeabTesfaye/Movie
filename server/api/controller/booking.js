@@ -32,7 +32,7 @@ export const newBooking = handler(async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
 
-    userExist.boonkings.push(booking);
+    userExist.bookings.push(booking);
     movieExist.bookings.push(booking);
     await userExist.save({ session });
     await movieExist.save({ session });
@@ -68,6 +68,7 @@ export const deleteBookingById = handler(async (req, res) => {
   const { id } = req.params;
   const session = await mongoose.startSession();
   try {
+    session.startTransaction();
     const booking = await Booking.findById(id).session(session);
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
@@ -83,18 +84,19 @@ export const deleteBookingById = handler(async (req, res) => {
 
     // remove booking from movie
     const movie = await Movie.findById(booking.movie).session(session);
-    if(!movie){
-      return res.status(404).json({message : "Movie Not Found"})
+    if (!movie) {
+      return res.status(404).json({ message: "Movie Not Found" });
     }
-    user.movie.pull(id);
-    await user.save({session})
+    movie.bookings.pull(id);
+    await movie.save({ session });
 
-    await booking.deleteOne().session(session)
-    session.commitTransaction()
-       return res
-          .status(200)
-          .json({ message: "Booking deleted successfully" });
+    await booking.deleteOne({ session });
 
+    if (session.state === "TRANSACTION_IN_PROGRESS") {
+      await session.commitTransaction();
+    }
+
+    return res.status(200).json({ message: "Booking deleted successfully" });
   } catch (err) {
     await session.abortTransaction();
     return res.status(500).json({ message: err.message });
@@ -102,5 +104,4 @@ export const deleteBookingById = handler(async (req, res) => {
     session.endSession();
   }
 });
-
 

@@ -2,6 +2,7 @@ import Admin from "../models/Admin.js";
 import handler from "express-async-handler";
 import hashPassword, { comparePasswords } from '../../lib/hashed.js'
 import generateToken from "../../lib/generateToken.js";
+
 export const addAdmin = handler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -66,7 +67,7 @@ export const login = handler(async(req,res) => {
         }
         const token = generateToken(admin._id);
         return res.status(200).json({
-            message : "Admin Loged In Sucssfull !!",
+            message : "Admin Loged In Sucssfully !!",
             token : token,
             id : admin._id
         })
