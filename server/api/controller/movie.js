@@ -7,10 +7,7 @@ import Admin from "../models/Admin.js";
 
 
 export const addMovie = handler(async(req,res) => {
-    // const {error} = movieSchema.validate(req.body);
-    // if (error) {
-    //   return res.status(422).json({ error: error.details[0].message });
-    // }
+    
 
    try {
     

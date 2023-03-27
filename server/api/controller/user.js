@@ -16,7 +16,7 @@ export const getAllUsers = handler(async (req, res) => {
 
 export const addUsers = handler(async (req, res) => {
   const { email, password, name } = req.body;
-  console.log(req.body);
+  
   try {
     if (
       !email &&
@@ -121,6 +121,7 @@ export const login = handler(async(req,res) => {
     }
 
     return res.status(200).json({
+      user,
       message: "login Sucssfully !!",
     });
 
