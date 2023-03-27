@@ -1,19 +1,19 @@
 import BASEURL from "./BASEURL";
-import axios from 'axios'
+import axios from "axios";
 
-export const getAllMovies = async() => {
-    try {
-        const { data } = await axios.get(`/movie`);
-        return data;
-    } catch (err) {
-        console.log(err);
-        return
-    }
-}
-
-export const userAuthRequest = async (data,signup) => {
+export const getAllMovies = async () => {
   try {
-    const {name,email,password} = data
+    const { data } = await axios.get(`/movie`);
+    return data;
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+};
+
+export const userAuthRequest = async (data, signup) => {
+  try {
+    const { name, email, password } = data;
     const { data: responseData } = await axios.post(
       `/user/${signup ? "signup" : "login"}`,
       {
@@ -30,27 +30,23 @@ export const userAuthRequest = async (data,signup) => {
 };
 
 export const getMovieDetails = async (id) => {
- try {
-  console.log(id);
-   const { data: responseData } = await axios.get(`movie/${id}`);
-   return responseData;
- } catch (error) {
-  console.log(error);
-  return
- }
+  try {
+    console.log(id);
+    const { data: responseData } = await axios.get(`movie/${id}`);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
 };
-
 
 export const adminAuthRequest = async (data) => {
   try {
     const { email, password } = data;
-    const { data: responseData } = await axios.post(
-      "/admin/login",
-      {
-        email,
-        password,
-      }
-    );
+    const { data: responseData } = await axios.post("/admin/login", {
+      email,
+      password,
+    });
     return responseData;
   } catch (err) {
     console.log(err.message);
@@ -58,31 +54,99 @@ export const adminAuthRequest = async (data) => {
   }
 };
 
-
-
-export const newBooking = async(data) => {
-   const { movie, date, seatNumber } = data;
-   const user = localStorage.getItem("userId")
-   console.log(movie, date, seatNumber, user
-    );
-   try {
+export const newBooking = async (data) => {
+  const { movie, date, seatNumber } = data;
+  const user = localStorage.getItem("userId");
+  console.log(movie, date, seatNumber, user);
+  try {
     const { data: responseData } = await axios.post("/booking", {
-      movie, date, user, seatNumber
+      movie,
+      date,
+      user,
+      seatNumber,
+    });
+    return responseData;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+};
+
+export const getBookingsOfUser = async () => {
+  try {
+    const id = localStorage.getItem("userId");
+    console.log(id);
+    const { data: responseData } = await axios.get(`/user/bookings/${id} `);
+
+    return responseData;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+};
+
+export const getUserById = async () => {
+  try {
+    const id = localStorage.getItem("userId");
+    const { data: responseData } = await axios.get(`user/${id}`);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+};
+
+export const getMovieById = async (id) => {
+  try {
+    const { data: responseData } = await axios.get(`movie/${id}`);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+};
+
+export const deteteBooking = async (id) => {
+  try {
+    console.log(id);
+    const { data: responseData } = await axios.delete(`booking/${id}`);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+};
+
+export const addMovie = async (data) => {
+  // const { title, description, releaseDate, posterUrl, featured, actors } = data;
+  // console.log(data);
+  try {
+    const { data: responseData } = await axios.post("/movie", {
+      title :data.title,
+      description : data.description,
+      releaseDate :data.releaseDate,
+      posterUrl : data.posterUrl,
+      featured : data.featured,
+      actors :data.actors,
+      admin : localStorage.getItem("adminId")
+    }, {
+      headers : {
+        Authorization : `Bearer ${localStorage.getItem("token")}`
+      }
     });
     return responseData
     
-   } catch (error) {
+  } catch (error) {
     console.log(error);
     return
-   }
-}
+  }
+};
 
 
-export const getBookingsOfUser = async() => {
+export const  getAdminById = async() =>{
+  const id = localStorage.getItem("adminId");
   try {
-    const id = localStorage.getItem("userId")
-    const { data: responseData } = await axios.get(`/user/bookings/:${id} `);
-    console.log(responseData);
+    const {data: responseData} = await axios.get(`/admin/${id}`)
     return responseData
   } catch (error) {
     console.log(error);

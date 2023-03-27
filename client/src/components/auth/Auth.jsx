@@ -2,19 +2,20 @@ import AuthForm from "./Form";
 import { userAuthRequest } from "../../lib/api";
 import { userActions } from "../../store";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 function Auth() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const onResponseReceived = (data) => {
-    // console.log("Not On USer", data)
-    // console.log("On Responser", data.user);
-    
     dispatch(() => userActions.login());
     localStorage.setItem("userId", data.user._id)
+    navigate("/");
   }
   const getData = async (data) => {
     try {
        userAuthRequest(data.values, data.signup).then(onResponseReceived)
       .catch(e =>  console.log(e)) 
+      
     } catch (error) {
       console.log(error);
       return;

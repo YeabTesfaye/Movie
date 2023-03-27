@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  getAllMovies,
-  getBookingsOfUser,
-  deteteBooking,
-  getUserById,
+  getAdminById,
 } from "../lib/api";
 import {
   Box,
@@ -12,41 +9,28 @@ import {
   ListItem,
   ListItemText,
   Typography,
-  colors,
 } from "@mui/material";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-function UserProfile() {
-  const [bookings, setBoookings] = useState([]);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [user, setUser] = useState("")
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+function AdminProfile() {
+  const [admin, setAdmin] = useState();
 
-
-  const handleDelete  = async(id) => {
-   try {
-     const data = await deteteBooking(id);
-     console.log(data);
-   } catch (error) {
-    console.log(error);
-    return
-   }
-  } 
+ 
   useEffect(() => {
     async function fetchData() {
-      const data = await getBookingsOfUser();
-      setBoookings(data.bookings || []);
-
-      const responserData = await getUserById();
-      setName(responserData.user.name || "");
-      setEmail(responserData.user.email || "");
-      setUser(responserData.user)
+     try {
+        const data = await getAdminById();
+        setAdmin(data.admin)
+     } catch (error) {
+        console.log(error);
+        return
+     }
     }
     fetchData();
   }, []);
   return (
     <Box width={"100%"} display={"flex"}>
-      {user && (
+      {admin && (
         <>
           <Box
             width={"30%"}
@@ -59,15 +43,7 @@ function UserProfile() {
             <AccountCircleRoundedIcon
               sx={{ fontSize: "6rem", textAlign: "center", mr: 3 }}
             />
-            <Typography
-              padding={1}
-              width={"auto"}
-              textAlign={"center"}
-              border={"1px solid #ccc"}
-              borderRadius={6}
-            >
-              Name : {name}
-            </Typography>
+
             <Typography
               mt={1}
               padding={1}
@@ -76,16 +52,16 @@ function UserProfile() {
               border={"1px solid #ccc"}
               borderRadius={6}
             >
-              Email : {email}
+              Email : {admin.email}
             </Typography>
           </Box>
         </>
       )}
-      {bookings && bookings.length > 0 && (
+      {admin && admin.addedMovies.length > 0 && (
         <>
           <Box width={"70%"} display={"flex"} flexDirection={"column"}>
             <Typography variant="h3" textAlign={"center"} padding={2}>
-              Bookings
+              Added Movies
             </Typography>
             <Box
               display={"flex"}
@@ -94,7 +70,7 @@ function UserProfile() {
               width={"80%"}
             >
               <List>
-                {bookings.map((booking, idx) => (
+                {admin.addedMovies.map((movie, idx) => (
                   <ListItem
                     key={idx}
                     sx={{
@@ -107,24 +83,8 @@ function UserProfile() {
                     <ListItemText
                       sx={{ margin: 1, width: "auto", textAlign: "left" }}
                     >
-                      Movie {booking.movie.title}
+                      Movie {movie.title}
                     </ListItemText>
-                    <ListItemText
-                      sx={{ margin: 1, width: "auto", textAlign: "left" }}
-                    >
-                      Seat {booking.seatNumber}
-                    </ListItemText>
-                    <ListItemText
-                      sx={{ margin: 1, width: "auto", textAlign: "left" }}
-                    >
-                      Date{new Date(booking.date).toDateString()}
-                    </ListItemText>
-                    <IconButton
-                      color="error"
-                      onClick={() => handleDelete(booking._id)}
-                    >
-                      <DeleteForeverIcon />
-                    </IconButton>
                   </ListItem>
                 ))}
               </List>
@@ -136,4 +96,4 @@ function UserProfile() {
   );
 }
 
-export default UserProfile;
+export default AdminProfile;

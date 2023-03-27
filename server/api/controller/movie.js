@@ -67,3 +67,4 @@ export const getMoviesById = handler(async(req,res) => {
         })
     }
 })
+

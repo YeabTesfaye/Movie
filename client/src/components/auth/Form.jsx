@@ -11,7 +11,7 @@ import { useState } from "react";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-
+import {Link} from 'react-router-dom'
 function AuthForm({ onSubmit, isAdmin }) {
   const [isSignup, setIsSignup] = useState(false);
   const [values, setValues] = useState({
@@ -36,7 +36,7 @@ function AuthForm({ onSubmit, isAdmin }) {
   return (
     <Dialog PaperProps={{ style: { borderRadius: 20 } }} open={true}>
       <Box ml={"auto"} padding={1}>
-        <IconButton>
+        <IconButton LinkComponent={Link} to="/">
           <CloseRoundedIcon />
         </IconButton>
       </Box>

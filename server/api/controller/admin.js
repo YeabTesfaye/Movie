@@ -79,6 +79,24 @@ export const login = handler(async(req,res) => {
 })
 
 
+export const getAdminById = handler(async(req,res) => {
+  try {
+    const {id} = req.params
+    const admin = await Admin.findById(id).populate("addedMovies");
+    if(!admin){
+      return res.status(404).json({
+        message : "Admin Not Found"
+      })
+    }
+    return res.status(200).json({admin})
+  } catch (err) {
+   return res.status(500).json({
+    message : err.message
+   }) 
+  }
+})
+
+
 export const getAllAdmins = handler(async(req,res) => {
   try {
     const admins = await Admin.find();
