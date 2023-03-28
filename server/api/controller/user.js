@@ -151,13 +151,17 @@ export const getUserById = handler(async(req,res) => {
 export const getBookingsOfUser = handler(async (req, res) => {
   const { id } = req.params;
   try {
-    const bookings = await Booking.find({ user: id });
+    const bookings = await Booking.find({ user: id }).populate("movie");
     if (!bookings) {
       return res.status(404).json({
         message: "Booking Not Found !!",
       });
     }
-    return res.status(200).json({ bookings });
+     const titles = await Booking.find({ user: id }).populate({
+       path: "movie",
+       select: "title",
+     });
+    return res.status(200).json({ bookings, titles });
   } catch (err) {
     return res.status(500).json({
       message: err.message,

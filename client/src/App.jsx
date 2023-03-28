@@ -13,6 +13,9 @@ import Booking from "./components/booking/Booking";
 import UserProfile from "./profile/UserProfile";
 import AddMovie from "./components/movie/AddMovie";
 import AdminProfile from "./profile/AdminProfile";
+import {ToastContainer,toast} from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
+
 axios.defaults.baseURL = "http://localhost:8080/api";
 
 function App() {
@@ -27,33 +30,36 @@ function App() {
   const isAdminloggedIn = useSelector((state) => state.admin.isloggedIn);
   const isUserloggedIn = useSelector((state) => state.user.isloggedIn)
   return (
-    <div>
-      <Header />
-      <section>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/movie" element={<Movie />} />
-          {!isAdminloggedIn && !isUserloggedIn && (
-            <>
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/auth" element={<Auth />} />
-            </>
-          )}
-          {isUserloggedIn && !isAdminloggedIn &&(
-            <>
-              <Route path="/booking/:id" element={<Booking />} />
-              <Route path="/user" element={<UserProfile />} />
-            </>
-          )}
-          {isAdminloggedIn && !isUserloggedIn && (
-            <>
-              <Route path="/add" element={<AddMovie />} />
-              <Route path="/adminUser" element={<AdminProfile />} />
-            </>
-          )}
-        </Routes>
-      </section>
-    </div>
+    <>
+    <ToastContainer position="bottom-center" limit={1}/>
+      <div>
+        <Header />
+        <section>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/movie" element={<Movie />} />
+            {!isAdminloggedIn && !isUserloggedIn && (
+              <>
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/auth" element={<Auth />} />
+              </>
+            )}
+            {isUserloggedIn && !isAdminloggedIn && (
+              <>
+                <Route path="/booking/:id" element={<Booking />} />
+                <Route path="/user" element={<UserProfile />} />
+              </>
+            )}
+            {isAdminloggedIn && !isUserloggedIn && (
+              <>
+                <Route path="/add" element={<AddMovie />} />
+                <Route path="/adminUser" element={<AdminProfile />} />
+              </>
+            )}
+          </Routes>
+        </section>
+      </div>
+    </>
   );
 }
 

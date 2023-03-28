@@ -6,22 +6,25 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { addMovie } from "../../lib/api";
+import { toast } from "react-toastify";
 
 function AddMovie() {
   const labelProps = {
     mt: 1,
     mb: 1,
   };
-  const [values, setValues] = useState({
+  const initialFormValues = {
     title: "",
     description: "",
     posterUrl: "",
     releaseDate: "",
     featured: false,
-  });
-
+  };
+  const [values, setValues] = useState(initialFormValues);
+  const navigate = useNavigate()
   const [actors, setActors] = useState([]);
   const [acotr, setAcotr] = useState("");
   const handleChange = (e) => {
@@ -32,14 +35,15 @@ function AddMovie() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(values, actors);
     console.log(values.description);
     try {
-      const data = await addMovie({ ...values, actors});
-      console.log(data);
+      const data = await addMovie({ ...values, actors });
+      setValues(initialFormValues)
+      toast.success(`successfully Added ${data.movie.title}`)
+      navigate("/")
     } catch (error) {
-        console.log(error);
-        return
+      toast.error("Error Occucred ")
+      return;
     }
   };
   return (
@@ -58,6 +62,7 @@ function AddMovie() {
           </Typography>
           <FormLabel sx={labelProps}>Title</FormLabel>
           <TextField
+            required
             name="title"
             type="text"
             variant="standard"
@@ -67,8 +72,9 @@ function AddMovie() {
           />
           <FormLabel sx={labelProps}>Description</FormLabel>
           <TextField
-          value={values.description}
-          onChange={handleChange}
+            required
+            value={values.description}
+            onChange={handleChange}
             name="description"
             variant="standard"
             type="text"
@@ -76,6 +82,7 @@ function AddMovie() {
           />
           <FormLabel sx={labelProps}>Poster Url</FormLabel>
           <TextField
+            required
             name="posterUrl"
             variant="standard"
             type="text"
@@ -85,6 +92,7 @@ function AddMovie() {
           />
           <FormLabel sx={labelProps}>Release Date</FormLabel>
           <TextField
+            required
             name="releaseDate"
             variant="standard"
             type="date"
@@ -95,6 +103,7 @@ function AddMovie() {
           <FormLabel sx={labelProps}>Actor</FormLabel>
           <Box display={"flex"}>
             <TextField
+              required
               value={acotr}
               name="actor"
               variant="standard"
@@ -112,7 +121,7 @@ function AddMovie() {
           </Box>
           <FormLabel sx={labelProps}>Featured</FormLabel>
           <Checkbox
-          color="success"
+            color="success"
             name="fetured"
             value={values.featured}
             onClick={(e) =>

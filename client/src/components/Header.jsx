@@ -22,16 +22,16 @@ function Header() {
   const navigate = useNavigate()
   const isAdminloggedIn = useSelector((state) => state.admin.isloggedIn);
   const isUserloggedIn = useSelector((state) => state.user.isloggedIn);
+  console.log("Admin", isAdminloggedIn);
+  console.log("User", isUserloggedIn);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const handleMoveSelect = (e,val) => {
     const movie = movies.find((movie) => movie.title === val)
-   
     if(isUserloggedIn){
       navigate(`/booking/${movie._id}`)
-     
     }
   }
 

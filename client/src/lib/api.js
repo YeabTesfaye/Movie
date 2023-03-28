@@ -1,4 +1,3 @@
-import BASEURL from "./BASEURL";
 import axios from "axios";
 
 export const getAllMovies = async () => {
@@ -106,7 +105,7 @@ export const getMovieById = async (id) => {
   }
 };
 
-export const deteteBooking = async (id) => {
+export const delteBookingById = async (id) => {
   try {
     console.log(id);
     const { data: responseData } = await axios.delete(`booking/${id}`);
@@ -147,6 +146,17 @@ export const  getAdminById = async() =>{
   const id = localStorage.getItem("adminId");
   try {
     const {data: responseData} = await axios.get(`/admin/${id}`)
+    return responseData
+  } catch (error) {
+    console.log(error);
+    return
+  }
+}
+
+
+export const deleteMoviById = async(id) => {
+  try {
+    const {data: responseData} = await axios.delete(`/movie/${id}`)
     return responseData
   } catch (error) {
     console.log(error);
