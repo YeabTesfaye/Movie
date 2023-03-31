@@ -22,6 +22,10 @@ const UserSchema = new Schema({
     required: true,
     minlength: 6,
   },
+  picturePath : {
+    type : String,
+    default : ""
+  },
   bookings: [
     {
       type: mongoose.Types.ObjectId,

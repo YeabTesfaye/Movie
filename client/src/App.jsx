@@ -13,13 +13,16 @@ import Booking from "./components/booking/Booking";
 import UserProfile from "./profile/UserProfile";
 import AddMovie from "./components/movie/AddMovie";
 import AdminProfile from "./profile/AdminProfile";
-import {ToastContainer,toast} from 'react-toastify'
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import NotFound from "./components/NotFound/NotFound";
+import { CssBaseline } from "@mui/material";
 
 axios.defaults.baseURL = "http://localhost:8080/api";
 
 function App() {
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (localStorage.getItem("userId")) {
       dispatch(userActions.login());
@@ -27,11 +30,14 @@ function App() {
       dispatch(adminActions.login());
     }
   }, []);
+
+
   const isAdminloggedIn = useSelector((state) => state.admin.isloggedIn);
-  const isUserloggedIn = useSelector((state) => state.user.isloggedIn)
+  const isUserloggedIn = useSelector((state) => state.user.isloggedIn);
   return (
     <>
-    <ToastContainer position="bottom-center" limit={1}/>
+      <ToastContainer position="bottom-center" limit={1} />
+      <CssBaseline />
       <div>
         <Header />
         <section>
@@ -56,6 +62,7 @@ function App() {
                 <Route path="/adminUser" element={<AdminProfile />} />
               </>
             )}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </section>
       </div>

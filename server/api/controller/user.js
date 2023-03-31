@@ -15,22 +15,10 @@ export const getAllUsers = handler(async (req, res) => {
 });
 
 export const addUsers = handler(async (req, res) => {
-  const { email, password, name } = req.body;
+  const { email, password, name, picturePath } = req.body;
   
   try {
-    if (
-      !email &&
-      email.trim() === "" &&
-      !password &&
-      password.trim() === "" &&
-      password.length < 6 &&
-      !name &&
-      name.trim() === ""
-    ) {
-      return res.status(422).json({
-        message: "Invalid Input",
-      });
-    }
+    
     const userExist =  await User.findOne({email});
     if(userExist){
       return res.status(409).json({
@@ -42,6 +30,7 @@ export const addUsers = handler(async (req, res) => {
       email,
       name,
       password: hashedPassword,
+      picturePath
     });
     await user.save();
     return res.status(201).json({ user });

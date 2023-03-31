@@ -7,6 +7,7 @@ import {
 } from "../lib/api";
 import {
   Box,
+  Grid,
   IconButton,
   List,
   ListItem,
@@ -57,15 +58,17 @@ function UserProfile() {
     <Helmet>
       <title>{name}</title>
     </Helmet>
-      <Box width={"100%"} display={"flex"}>
+      <Grid width={"100%"} container spacing={10}>
         {user && (
           <>
-            <Box
-              width={"30%"}
-              display={"flex"}
-              justifyContent={"center"}
-              flexDirection={"column"}
-              alignItems={"center"}
+            <Grid
+              // width={"30%"}
+              item 
+              xs={6}
+              // display={"flex"}
+              // justifyContent={"center"}
+              // flexDirection={"column"}
+              // alignItems={"center"}
               padding={3}
             >
               <AccountCircleRoundedIcon
@@ -90,12 +93,12 @@ function UserProfile() {
               >
                 Email : {email}
               </Typography>
-            </Box>
+            </Grid>
           </>
         )}
         {bookings && bookings.length > 0 && (
           <>
-            <Box width={"70%"} display={"flex"} flexDirection={"column"}>
+            <Grid width={"70%"} display={"flex"} flexDirection={"column"}>
               <Typography variant="h3" textAlign={"center"} padding={2}>
                 Bookings
               </Typography>
@@ -141,10 +144,10 @@ function UserProfile() {
                   ))}
                 </List>
               </Box>
-            </Box>
+            </Grid>
           </>
         )}
-      </Box>
+      </Grid>
     </>
   );
 }

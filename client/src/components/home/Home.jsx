@@ -1,5 +1,4 @@
 import { Box, Typography, Button } from "@mui/material";
-import move1 from "../../assets/movie1.jpg";
 import { useState, useEffect } from "react";
 import { getAllMovies } from "../../lib/api";
 import MovieItem from "../movie/movieItem";
